@@ -110,7 +110,7 @@ To train the model, I used AdamOptimizer with a batch size of 128, 85 Epochs, an
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the 8th cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the 8th cell of the Ipython notebook. Their might be some slight overfitting.
 
 My final model results were:
 * training set accuracy of 100%
