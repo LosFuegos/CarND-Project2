@@ -115,7 +115,7 @@ The code for calculating the accuracy of the model is located in the 8th cell of
 My final model results were:
 * training set accuracy of 100%
 * validation set accuracy of 97.8% 
-* test set accuracy of ?
+* test set accuracy of 94.4%
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
