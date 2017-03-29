@@ -11781,6 +11781,9 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load pickled data</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">exposure</span><span class="p">,</span> <span class="n">img_as_float</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="c1"># TODO: Fill this in based on where you saved the training and testing data</span>
 
 <span class="n">training_file</span> <span class="o">=</span> <span class="s1">&#39;train.p&#39;</span>
@@ -11942,104 +11945,102 @@ Number of classes = 43
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,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
-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
-kDxSwf8Dl4p5MCH9cfUAAAAASUVORK5CYII=
+AAALEgAACxIB0t1+/AAAFRpJREFUeJztXVmMHVda/v6qu/d1r26723acdiY7CiSaEMLAAxqIFPES
+HkCaIKFBGikvIIHEA6N5Agmk8AI8gECRiMgDIkQaJEZoJDQaDWLPZCMZstrjJV667Xbvy12rfh7u
+7fsv7W7ftiu37fb5pMin7jl16lTl7/Ov5/+JmREQcLuI9nsBAQcDgZACMkEgpIBMEAgpIBMEQgrI
+BIGQAjJBIKSATHBbhEREzxPRp0R0hoi+mdWiAu4+0K0aJIkoBvAZgOcAXALwFoAXmfmj7JYXcLcg
+dxv3PgPgDDOfBQAieh3ACwB2JKRCocClUumGfUSkLvpbwG7DzHzu2nbZcfrvys8B2umPzo6L/H07
+r7Kvrihy41iuGW5NZmPQ7+zeU93nV6GnmJ+fv87MkzsvtIPbIaTjAC6q60sAfma3G0qlEp55+unO
+RWy5aj6vluI+XKraOfNxEjOOSOYs5Oyr5WO5LhRkXMJ2HUkq80duDsQ3JqTISQilYlHW5MYaQo2c
+ZKEGx+r7FEoFN4msK03apitpNWVd6p3jfN5O0Zb7yBFjqhb5l3/x1xfQB26HkG7057TtSxPRSwBe
+AuwHDjhYuB1CugTgPnV9AsAVP4iZXwHwCgAMDw8z5+KtHjMuSWV3IfZsKdIX0nQ7QS6OVdu+WqT+
++imScbFqA0CUyjh260jaska9ocZ2CrB6l1ze7iZJKu/dTuyOmlc7oGZnsfuTjdQPbbfGZiLzG7YX
+pWZcqsblc/Y7EuzYfnA7WttbAB4iolNEVADwNQDfuY35Au5i3PKOxMxtIvptAP8CIAbwKjN/mNnK
+Au4q3A5rAzN/F8B3M1pLwF2M2yKkPYOALXEnbVv5oK3YcuS0mcjwdyUjxVYTiUiElcjJPlqUaKlH
+k7OjxUo2iWIr33Aqmk6UV+OcWcDIGKl9z5TVuiL7+eO80vZI5kgTr53K8/wa9TdpKc2snfo16vlM
+Fzjdu20xuEgCMkEgpIBMMFjWBmEl+ZxlPYnRON02rNV/loHbjH2q3Wg2TV+snpdT83kWm5BW3W0f
+FMttQ+ZLnFEwr1YS72JRjnPeRKEXIu/ZTr0YoL0ATnVXtoik1ZLfU7tGzY6T1NsvsGeEHSkgEwRC
+CsgEgZACMsFgZSQGkHZ4P3sBZxf1X4e6aHXde74TpSa3nNwSKZGpkJOLQsE5RJXvo92o2S7lWI7y
+lV57s2blsdWNjV57uFwxfeUhuY6dJ4JaSn5Ssk6UtxETLaWeN9vO9aG/j2k7WTCV+5KW7es/ekHd
+s+c7AgJugEBIAZlgoKyNCMhtsS0fc6S23sSpu7Hx/t/4HgBgpTL77dmwCvXWDDtHWVnHq0Mjpq9Y
+1nOIBblNLtanUO61cy7uqlBWbMqxVVbxTgnJIhN2FnDF0iNqmD4dj6RVfk4tC2w2VV+yd2+/R9iR
+AjJBIKSATDBwy/YWZ2PnVI0j2a5TtlutDvLSLMuHqmqNJXYaXawsuXk136GSjdo8OnKk1y6gavpa
+NYnbW1ma7bVry1Zrg7KWJ+5PNS7IJy8dsvOXxsZ67erkCelg+63qWJZnN1qmr621uF1YlhYX2EXm
+Ba0tYN8QCCkgEwRCCsgEA5WRoohQKHdUZR2kDgCx0uvj1NJ3m7WnWstBzvNNOijNPrtSFBV9akTk
+j6oLim+uifxx+cIZ05fbXJA1tbWavbOs5qEd95vXrpu+jfzlXrtxXNZxeGTMjDs0drjXXi/ZZ9fr
+ao3aHLKLSz9yByViF5nRD8KOFJAJAiEFZIKBW7bz3VhnHZMMAC1lefWbcEWpqokO3HLqbaTmGMpb
+Z+lUdbzXLjZkjpUFexRvff5cr53WfXCcWKwrar5CdciOUyaFlou3bmzUe+36yprp46Y4e9fPfSb3
+VOz81aMP9donHjlp+jB6qNe8en2l1/ZnBZOWfKvYxZx780s/CDtSQCYIhBSQCQIhBWSCwQf/d73t
+Q0V37kxdt1qWR+sA+qZy3beaNnitoOSRiYpVmeOmuCPWrolav7k4ZxeoIgomjo+brtHph3vtIydF
+TqmO23FxUbz6iTsj1m7Iuy1emTd91z7/oNeeuyiy2uZ63YxL5k732hFtmL7xUzO9dlqVdSxt2G/F
+JorCrjHaFnV4c9x0RyKiV4noGhH9n/ptnIi+R0Snu/+O7TZHwMFHP6ztbwE87377JoDvM/NDAL7f
+vQ64h3FT1sbM/0ZEM+7nFwD8Qrf9GoB/BfD7fcyFVvesVcHtngUdD+2OMuuYLH30OHVso1qQoLEh
+l6qlMS8sbH3hWq+diyzbmPrSTK99/xNfMX3lo6JqJ2VRs9suCiGJdFy5iz9X1oDxcWexnpHEaOVz
+kt/q7FvvmHHNJTFZrM5dMn2RevahqZlee4nWzbiUVUDcNlY2OO//UWaeBYDuv0duMj7ggOMLF7Z1
+xrZyOWRsO6i4VUK6SkTTzDxLRNMAru00UGdsGxsd5i2jacNZpVt6q/XJPRWrI+Xs9WlNx4dEe0rd
+EZu1BcUCEmFnE6e+ZMYde1LSYOaPnDJ9aUnY2aZiq626PbZUUGefys7CnrBoUq26DUpbWlzttStH
+ZJM/+dRTZtzpNzdlHevW8ZuuiTV7eEp1OMdskuo1O82yPTjW9h0AX++2vw7gn25xnoADgn7U/78H
+8N8AHiGiS0T0DQAvA3iOiE6jk2f75S92mQF3OvrR2l7coesXM15LwF2MgVq2U06x2ejIDwWXSkVb
+r31clTpqhqQpsk8lZ4X3QiRe8sVL1qufbKpj1GMipxQmrRz0/mWVuXbBpsQ8NfN4r31hQQLIZs++
+b8aVUvHq/+QTP2v68lVJBHz6w9Om7/yZ93rtdl7krCceuN+MO/ngY7323If/a/o2rovMlBuX+cen
+HjbjLq/J92g0rAmk3bTX/SD42gIyQSCkgEwwUNbGIKTdkg31ukuwqUo5RC5DOZEqi6DPp5XKZlyr
+KWpxurpk+koqO9r49PFe+/zKZTPuk3kppVIq2M8zOiwq+Sene65H5NesdbnZlKPeb75z1vSNHBO1
++9LZT0zf9JhYzi81FqU9a527P32/mAOWLnxu+hJlQqhfU3HfR/w5Qnm3RttnpsOeEXakgEwQCCkg
+EwRCCsgEA8/YlrQ7Mk7qs5UpDzQlTkZSqWcqRaH9ctGmk9lUZ9JaDevtLlfFVDB5XNwizdKwGbeE
+8732+uJVu0iVKXdanTU7MmFltY11cd583rLuB5M5zQXdP3BMZLCNFVW4ZsHKYNURMXMUDk+YvlU1
+lmoSzJavW5W+qNLttJws6JPY94OwIwVkgkBIAZlgsOo/M1rdtCu+qqdO4OY31khFA0QqnrvgtuAN
+Zb2m1HrWcyWJ2a6MH+u1pyesZXtuU9iGP3c2qgoXTj7+ZK9da1u2sfSZWJSLyzYmvHhYIgjW4c0c
+YhooFOXd6v78Xk7ereyC4xCrmIimjOOGje3WNVe2hbWFtDYB+4VASAGZYMDHkQi0lbjT1cYgzdu2
+1X1SrE3RfuwymaWqrJTnnVQQDS8uSbBZLu8sviW59qXsS7HMX6qIpnZpbtOM+/yKWLN/YtIVqD4s
+wXeL7j3TVGU4iUyHG6ccywWrMRIpR7aaL23ZpKWsynFtq0g+wJjtgACDQEgBmSAQUkAmGHgpUu7y
+49TzYcX3I9qZvlOd4gZORlIiTcK7pGrR8hlbMwF00nR33qul6p8l6rj4gvPOR8pzPzn1iOlbLopM
+k7pE7E0lx+i6ay1n6W+rdbAvdarkqVTJnf576LotiZPBgowUsG8IhBSQCfYhG8nWv377lK22nfhA
+KxWEpe5reCtBXpUYdXVK2jWxPqc1cejGI561afXfsRRlKV5ZFgfxwsULZtzJCVHxRyanTN9Sos61
+5W0tko2cWKVZqeSpY21JS9hqY2PV9qkzezrWnfM2vl2X1vLfOyRsD9g3BEIKyASBkAIywYC9/8Lf
+ybkw9BW5GmdaOW0mIqfUnde9OiwyRm3emgaaG+JZX74mBWmKh6fNuFhlek/ZrmOjLur5+Y3zvfbK
+mg2Am1E5A1aaVjZp60D7vA3MO3NFzu0XKiI/+WTrtXX5BrXr9uw/sZKRlKmh7XIQNDZFTmy7cqaR
+D83oA/0c2b6PiH5ARB8T0YdE9Dvd30PWtoAe+mFtbQC/x8yPAXgWwG8R0eMIWdsCFPo5+z8LYCup
+1hoRfQzgOG4laxunSJOOR3r75qk8/Dm3LNJZ2oQ1NF1C9cNVUbU3Yc+1NevCNuavSDL0Yw88YMYV
+lVc8ytktf6Mp7HFhSazXi6uWtX16TtTziysXTd/Mo3Lse1zVFAGAi+ckM1tuVljWw1PHzLj6psxf
+W1g2faQs9bmqBNHVXOlXfZat7c610S51S3bCnoTtbgrApwC8iZC1LUChb2GbiKoAvg3gd5l5td9w
+TJ2xreCKAQccHPS1I1EnGu3bAP6Omf+x+/PVbrY27Ja1jZlfYeanmfnpfH7ghvSAAeGm/2eps/X8
+DYCPmflPVddW1raX0WfWtigilMudR7acypno+m3uzJtOGsvK+9+s2yjL4qiouKUxd95rTtLQXFXn
+5YeP25psEyck/cvUlJVhKiNyBm5GLXL0wQftOtTfZyVv5bipkshgk4/OmL77xuR9qCXq+TDZJIez
+H4lLprluZcFCSXb9oUkxbSy07DpSdTgijn1egL27SPrZIn4OwG8A+BERbSXj+RY6BPRGN4Pb5wB+
+bc9PDzgw6Edr+w/snHg5ZG0LADDwUqQRDlU723St6eqYqbLjzYYP1lK8TfG5FTduTm3zQ6OWHeRX
+xcpb35Bg/R+/ZzOencwJ6/nK44/aOcrC2ianVTl1lzg+Vm732EuhOrqArPIxWpbn1RaFtZ1/7yMz
+bnlODhdE5I5ij8lhAyoJa67V7AEFHdDna+eFwLaAfUMgpIBMMPCYbeqyprIrs5Uqra3ZcGewlIak
+tbua0+4W6sLaRg6fMH35EYmd3twQVpFcXzTjzv3Pf/baD3/ZBo2NP/DlXrtSHpX1FVw8NHSAnWUT
+eXUWr12zQXUbykp97oN3e+2FCzazG1pylDw/ZNljeVpYWy0S1s9tF8Cnvim7IECmUGU7YJ8QCCkg
+EwRCCsgEgw1sSxmNrfNgTnYwWW0dfWt11Egjrqz46rrIDldLVvY5elI86LXWTK/dmrfe+Y0FkbM+
+/q83Td/4ObGOjxyVzLjlqaNmXFIUC3vadvLTskQhrFy1XqWlWYki2FyQ4DukNiVNsSqmjMOnbPRC
+bURkpKUVuS/vasqlKsLCn3mjICMF7BcCIQVkgoHHbDe6idoTFzuVKBbgDMUm7YoOJ/bhV+q4F2av
+z5o+JlF/jz4oFbJXnel5dVEcumvrlqXUPxM1fO6sOHvZnU9LY4nT9klXWSU0RWLNHNqRGpWFfVWG
+R8y40ZNSz6Q2bsPAFpfFgt2qybPysf1aOfVNo9jGjvt0Pv0g7EgBmSAQUkAmCIQUkAkGXK+N0eh6
+/cmro4ovs/c+a55tulzqPGVSaCb21eYWVtTVj3ut8RNWdS9OiMe8vWrrqS3Nirqu677GLhl6DJWe
+xq2xpYPGcravVBVZqzItBW6KFbvGuhLJLs/blDqkZDB9Hq5hYwCd7Ob2k707/8OOFJANAiEFZIKB
+1yJJu7p95DzOpGKxyWVsY2PBlu06crHFrOwGnNq+pkr0fnlezowtVqyqO1mRhO3HTtnj3PlxYXtJ
+U1ni123dk6Jab+repVmS+eFqgBSqct+SSmUzv2nnb67K+bokcdmBlRjgit7bOZStJHGRAcx731/C
+jhSQCQIhBWSCAZci5V52sNgnCVcm6yi2y0oUm0q1PXubBXbnPp2UTG/dGy7jWVsFx224YtNVFQM9
+MS7O0YmTM2ZcpSLx4i3HYNZU1rfVdRtHvbQmWuHCmmiZbef41Rw9H3sxQHkBFFuNIvtNG+r7NOs1
+0+ePg/WDsCMFZIJASAGZIBBSQCYYfFGbrszAzi1u4tycWl9Umc3M0W5ngc0rL/a2hO3qeca47J5V
+VkVihlwm2Eoksk9bZYC7dt0em2ZVNr7etkelIy3TlG0WtSF1XR0Va/Zawwpra6rMqhdn9HtqkdFn
++dX3Jc5UEvPehaR+MraViOiHRPR+N2PbH3Z/P0VEb3Yztv0DEYVUI/cw+mFtDQBfZeafAvAkgOeJ
+6FkAfwLgz7oZ25YAfOOLW2bAnY5+zv4zgK29NN/9jwF8FcCvd39/DcAfAPir3eYiiLrq6424k1Vu
+EckN+yK3sedVHDK57Vrbf4uKnY0O2SrbI0UpWVpwgWerFyXoramco/GGDYArmfVuK/TZazW86q5q
+wJUqEjc9cszWfCtWJSF807GslZrErSeJ8hZ4drVL8Nrew9r6z48UdzORXAPwPXTc58vMvPX/5xI6
+6QAD7lH0RUjMnDDzkwBOAHgGwGM3Gnaje4noJSJ6m4je1tWFAg4W9qT+M/MyOklHnwUwSkRbvOQE
+gCs73KMytuVvNCTgAKCfjG2TAFrMvExEZQC/hI6g/QMAvwrgdfSZsQ3ouEmA7WqrkZmcWNHeIegt
+54PjUl2DzG6QBTV2alQC5quuLm5rVVwTq9dttlpsijuloGSTvHP3xJGqF+s+sV5/wXnuk1WRb1qb
+IoOtNW3Z+OKofL2JwzYzXXJIchIsLqscAU4mNSVzvbzkT1/0gX7sSNMAXqPOqbkIwBvM/M9E9BGA
+14nojwC8h056wIB7FP1obR+gkxLZ/34WHXkpIAB0K2eYbvlhRPMALgA4DOD6TYbfK7jTv8X9zDx5
+s0EDJaTeQ4neZuanB/7gOxAH5VsEp21AJgiEFJAJ9ouQXtmn596JOBDfYl9kpICDh8DaAjLBQAmJ
+iJ4nok+J6AwR3XOFAg9yNc6BsbauZfwzAM+hEy3wFoAXmfmjXW88QOhWkZpm5neJ6BCAdwD8CoDf
+BLDIzC93/8DGmHn3Iop3GAa5Iz0D4Awzn2XmJjo+uhcG+Px9BzPPMvO73fYaAF2N87XusNfQIa67
+CoMkpOMAdObPezqG6aBV4xwkId0oWco9qTL6apz7vZ4sMEhCugTgPnW9YwzTQcbtVOO8kzFIQnoL
+wEPd0ycFAF9DpwrlPYM+qnECe4jtupMwaO//LwP4cwAxgFeZ+Y8H9vA7AET08wD+HcCPILF930JH
+TnoDwEl0q3Ey8+INJ7lDESzbAZkgWLYDMkEgpIBMEAgpIBMEQgrIBIGQAjJBIKSATBAIKSATBEIK
+yAT/DxfTXnbrzaG3AAAAAElFTkSuQmCC
 "
 >
 </div>
@@ -12050,7 +12051,7 @@ kDxSwf8Dl4p5MCH9cfUAAAAASUVORK5CYII=
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x7f2ca1e47898&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x7f8c3cf578d0&gt;</pre>
 </div>
 
 </div>
@@ -12060,96 +12061,105 @@ kDxSwf8Dl4p5MCH9cfUAAAAASUVORK5CYII=
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,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
-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
-T1/ehhcAAAAASUVORK5CYII=
+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
+QmCC
 "
 >
 </div>
@@ -12272,9 +12282,6 @@ T1/ehhcAAAAASUVORK5CYII=
 <span class="c1">### Feel free to use as many code cells as needed.</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 
-<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">85</span>
-<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
-<span class="n">c</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="kn">from</span> <span class="nn">tensorflow.contrib.layers</span> <span class="k">import</span> <span class="n">flatten</span>
 
 
@@ -12284,7 +12291,7 @@ T1/ehhcAAAAASUVORK5CYII=
     <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.1</span>
     
 <span class="c1"># Layer 1: Convolutional. Input = 32x32x1. Output = 28x28x6.</span>
-    <span class="n">conv1_W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer_conv2d</span><span class="p">())</span> <span class="c1">#tf.Variable(tf.truncated_normal(shape=(5, 5, c, 6), mean = mu, stddev = sigma))</span>
+    <span class="n">conv1_W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer_conv2d</span><span class="p">())</span> <span class="c1">#tf.Variable(tf.truncated_normal(shape=(5, 5, c, 6), mean = mu, stddev = sigma))</span>
     <span class="n">conv1_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
     <span class="n">conv1</span>   <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">conv1_W</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;VALID&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv1&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">conv1_b</span>
 
@@ -12367,11 +12374,14 @@ sets imply underfitting. A high accuracy on the training set but low accuracy on
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">))</span>
 <span class="n">one_hot_y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">43</span><span class="p">)</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.0015255</span>
 <span class="n">prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">85</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
 
 <span class="n">logits</span> <span class="o">=</span> <span class="n">LeNet</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
 <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">one_hot_y</span><span class="p">)</span>
@@ -12385,7 +12395,6 @@ sets imply underfitting. A high accuracy on the training set but low accuracy on
 <span class="c1">### Feel free to use as many code cells as needed.</span>
 <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">one_hot_y</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">accuracy_operation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -12407,6 +12416,19 @@ sets imply underfitting. A high accuracy on the training set but low accuracy on
         <span class="n">accuracy</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">accuracy_operation</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">batch_x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">batch_y</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
         <span class="n">total_accuracy</span> <span class="o">+=</span> <span class="p">(</span><span class="n">accuracy</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch_x</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">total_accuracy</span> <span class="o">/</span> <span class="n">num_examples</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
 
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
@@ -12447,119 +12469,119 @@ sets imply underfitting. A high accuracy on the training set but low accuracy on
 <pre>Training...
 
 EPOCH 1 ...
-Validation Accuracy = 0.827
-Training Accuracy = 0.868
+Validation Accuracy = 0.830
+Training Accuracy = 0.874
 
 EPOCH 2 ...
 Validation Accuracy = 0.897
-Training Accuracy = 0.942
+Training Accuracy = 0.938
 
 EPOCH 3 ...
-Validation Accuracy = 0.932
-Training Accuracy = 0.971
+Validation Accuracy = 0.931
+Training Accuracy = 0.965
 
 EPOCH 4 ...
-Validation Accuracy = 0.939
-Training Accuracy = 0.979
+Validation Accuracy = 0.948
+Training Accuracy = 0.977
 
 EPOCH 5 ...
-Validation Accuracy = 0.947
-Training Accuracy = 0.985
+Validation Accuracy = 0.943
+Training Accuracy = 0.980
 
 EPOCH 6 ...
-Validation Accuracy = 0.951
-Training Accuracy = 0.990
+Validation Accuracy = 0.956
+Training Accuracy = 0.984
 
 EPOCH 7 ...
-Validation Accuracy = 0.951
-Training Accuracy = 0.991
+Validation Accuracy = 0.955
+Training Accuracy = 0.986
 
 EPOCH 8 ...
-Validation Accuracy = 0.953
-Training Accuracy = 0.990
-
-EPOCH 9 ...
-Validation Accuracy = 0.961
+Validation Accuracy = 0.960
 Training Accuracy = 0.992
 
+EPOCH 9 ...
+Validation Accuracy = 0.960
+Training Accuracy = 0.993
+
 EPOCH 10 ...
-Validation Accuracy = 0.963
-Training Accuracy = 0.995
+Validation Accuracy = 0.962
+Training Accuracy = 0.993
 
 EPOCH 11 ...
-Validation Accuracy = 0.958
+Validation Accuracy = 0.961
 Training Accuracy = 0.995
 
 EPOCH 12 ...
-Validation Accuracy = 0.956
-Training Accuracy = 0.995
+Validation Accuracy = 0.965
+Training Accuracy = 0.994
 
 EPOCH 13 ...
 Validation Accuracy = 0.963
-Training Accuracy = 0.997
+Training Accuracy = 0.996
 
 EPOCH 14 ...
-Validation Accuracy = 0.962
-Training Accuracy = 0.997
+Validation Accuracy = 0.964
+Training Accuracy = 0.995
 
 EPOCH 15 ...
-Validation Accuracy = 0.966
-Training Accuracy = 0.998
+Validation Accuracy = 0.972
+Training Accuracy = 0.996
 
 EPOCH 16 ...
-Validation Accuracy = 0.968
-Training Accuracy = 0.998
+Validation Accuracy = 0.963
+Training Accuracy = 0.995
 
 EPOCH 17 ...
-Validation Accuracy = 0.968
-Training Accuracy = 0.998
+Validation Accuracy = 0.966
+Training Accuracy = 0.997
 
 EPOCH 18 ...
-Validation Accuracy = 0.963
-Training Accuracy = 0.998
+Validation Accuracy = 0.970
+Training Accuracy = 0.997
 
 EPOCH 19 ...
-Validation Accuracy = 0.965
+Validation Accuracy = 0.970
 Training Accuracy = 0.998
 
 EPOCH 20 ...
-Validation Accuracy = 0.968
+Validation Accuracy = 0.966
 Training Accuracy = 0.998
 
 EPOCH 21 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.971
 Training Accuracy = 0.998
 
 EPOCH 22 ...
-Validation Accuracy = 0.963
+Validation Accuracy = 0.967
 Training Accuracy = 0.998
 
 EPOCH 23 ...
 Validation Accuracy = 0.966
-Training Accuracy = 0.999
+Training Accuracy = 0.998
 
 EPOCH 24 ...
 Validation Accuracy = 0.963
 Training Accuracy = 0.998
 
 EPOCH 25 ...
-Validation Accuracy = 0.960
-Training Accuracy = 0.997
+Validation Accuracy = 0.968
+Training Accuracy = 0.998
 
 EPOCH 26 ...
 Validation Accuracy = 0.971
-Training Accuracy = 0.998
-
-EPOCH 27 ...
-Validation Accuracy = 0.967
 Training Accuracy = 0.999
 
+EPOCH 27 ...
+Validation Accuracy = 0.963
+Training Accuracy = 0.998
+
 EPOCH 28 ...
-Validation Accuracy = 0.968
+Validation Accuracy = 0.972
 Training Accuracy = 0.999
 
 EPOCH 29 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.969
 Training Accuracy = 0.999
 
 EPOCH 30 ...
@@ -12567,163 +12589,163 @@ Validation Accuracy = 0.966
 Training Accuracy = 0.999
 
 EPOCH 31 ...
-Validation Accuracy = 0.970
+Validation Accuracy = 0.972
 Training Accuracy = 0.999
 
 EPOCH 32 ...
-Validation Accuracy = 0.969
+Validation Accuracy = 0.968
 Training Accuracy = 0.999
 
 EPOCH 33 ...
-Validation Accuracy = 0.973
+Validation Accuracy = 0.971
 Training Accuracy = 0.999
 
 EPOCH 34 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.975
 Training Accuracy = 0.999
 
 EPOCH 35 ...
-Validation Accuracy = 0.969
+Validation Accuracy = 0.974
 Training Accuracy = 0.999
 
 EPOCH 36 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.973
 Training Accuracy = 0.999
 
 EPOCH 37 ...
-Validation Accuracy = 0.970
+Validation Accuracy = 0.971
 Training Accuracy = 0.999
 
 EPOCH 38 ...
-Validation Accuracy = 0.970
+Validation Accuracy = 0.973
 Training Accuracy = 0.999
 
 EPOCH 39 ...
-Validation Accuracy = 0.968
+Validation Accuracy = 0.972
 Training Accuracy = 0.999
 
 EPOCH 40 ...
-Validation Accuracy = 0.971
-Training Accuracy = 1.000
+Validation Accuracy = 0.969
+Training Accuracy = 0.999
 
 EPOCH 41 ...
-Validation Accuracy = 0.970
+Validation Accuracy = 0.967
 Training Accuracy = 0.999
 
 EPOCH 42 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.971
 Training Accuracy = 0.999
 
 EPOCH 43 ...
-Validation Accuracy = 0.975
-Training Accuracy = 1.000
+Validation Accuracy = 0.976
+Training Accuracy = 0.999
 
 EPOCH 44 ...
-Validation Accuracy = 0.971
-Training Accuracy = 0.999
-
-EPOCH 45 ...
-Validation Accuracy = 0.968
-Training Accuracy = 0.998
-
-EPOCH 46 ...
-Validation Accuracy = 0.969
-Training Accuracy = 1.000
-
-EPOCH 47 ...
-Validation Accuracy = 0.965
-Training Accuracy = 0.999
-
-EPOCH 48 ...
-Validation Accuracy = 0.968
-Training Accuracy = 0.999
-
-EPOCH 49 ...
-Validation Accuracy = 0.971
-Training Accuracy = 0.999
-
-EPOCH 50 ...
-Validation Accuracy = 0.969
-Training Accuracy = 0.999
-
-EPOCH 51 ...
-Validation Accuracy = 0.960
-Training Accuracy = 0.999
-
-EPOCH 52 ...
-Validation Accuracy = 0.973
-Training Accuracy = 1.000
-
-EPOCH 53 ...
-Validation Accuracy = 0.972
-Training Accuracy = 1.000
-
-EPOCH 54 ...
 Validation Accuracy = 0.974
 Training Accuracy = 1.000
 
-EPOCH 55 ...
-Validation Accuracy = 0.971
+EPOCH 45 ...
+Validation Accuracy = 0.970
+Training Accuracy = 0.999
+
+EPOCH 46 ...
+Validation Accuracy = 0.969
+Training Accuracy = 0.999
+
+EPOCH 47 ...
+Validation Accuracy = 0.974
 Training Accuracy = 1.000
 
-EPOCH 56 ...
+EPOCH 48 ...
+Validation Accuracy = 0.978
+Training Accuracy = 0.999
+
+EPOCH 49 ...
+Validation Accuracy = 0.970
+Training Accuracy = 0.999
+
+EPOCH 50 ...
+Validation Accuracy = 0.975
+Training Accuracy = 0.999
+
+EPOCH 51 ...
+Validation Accuracy = 0.977
+Training Accuracy = 1.000
+
+EPOCH 52 ...
+Validation Accuracy = 0.971
+Training Accuracy = 0.999
+
+EPOCH 53 ...
+Validation Accuracy = 0.973
+Training Accuracy = 0.999
+
+EPOCH 54 ...
+Validation Accuracy = 0.970
+Training Accuracy = 0.999
+
+EPOCH 55 ...
 Validation Accuracy = 0.972
+Training Accuracy = 0.999
+
+EPOCH 56 ...
+Validation Accuracy = 0.975
 Training Accuracy = 1.000
 
 EPOCH 57 ...
-Validation Accuracy = 0.967
-Training Accuracy = 1.000
+Validation Accuracy = 0.969
+Training Accuracy = 0.999
 
 EPOCH 58 ...
-Validation Accuracy = 0.973
-Training Accuracy = 1.000
+Validation Accuracy = 0.972
+Training Accuracy = 0.999
 
 EPOCH 59 ...
-Validation Accuracy = 0.971
+Validation Accuracy = 0.974
 Training Accuracy = 0.999
 
 EPOCH 60 ...
-Validation Accuracy = 0.973
+Validation Accuracy = 0.972
 Training Accuracy = 1.000
 
 EPOCH 61 ...
-Validation Accuracy = 0.971
-Training Accuracy = 1.000
+Validation Accuracy = 0.966
+Training Accuracy = 0.999
 
 EPOCH 62 ...
-Validation Accuracy = 0.973
+Validation Accuracy = 0.975
 Training Accuracy = 1.000
 
 EPOCH 63 ...
-Validation Accuracy = 0.968
-Training Accuracy = 0.999
+Validation Accuracy = 0.970
+Training Accuracy = 1.000
 
 EPOCH 64 ...
 Validation Accuracy = 0.972
 Training Accuracy = 1.000
 
 EPOCH 65 ...
-Validation Accuracy = 0.970
+Validation Accuracy = 0.968
 Training Accuracy = 1.000
 
 EPOCH 66 ...
-Validation Accuracy = 0.967
+Validation Accuracy = 0.972
 Training Accuracy = 1.000
 
 EPOCH 67 ...
-Validation Accuracy = 0.964
-Training Accuracy = 0.999
-
-EPOCH 68 ...
-Validation Accuracy = 0.966
-Training Accuracy = 0.998
-
-EPOCH 69 ...
 Validation Accuracy = 0.971
 Training Accuracy = 1.000
 
-EPOCH 70 ...
+EPOCH 68 ...
 Validation Accuracy = 0.973
+Training Accuracy = 0.999
+
+EPOCH 69 ...
+Validation Accuracy = 0.973
+Training Accuracy = 1.000
+
+EPOCH 70 ...
+Validation Accuracy = 0.975
 Training Accuracy = 1.000
 
 EPOCH 71 ...
@@ -12731,59 +12753,59 @@ Validation Accuracy = 0.973
 Training Accuracy = 1.000
 
 EPOCH 72 ...
-Validation Accuracy = 0.971
-Training Accuracy = 1.000
+Validation Accuracy = 0.970
+Training Accuracy = 0.999
 
 EPOCH 73 ...
-Validation Accuracy = 0.973
+Validation Accuracy = 0.976
 Training Accuracy = 1.000
 
 EPOCH 74 ...
-Validation Accuracy = 0.968
+Validation Accuracy = 0.974
 Training Accuracy = 1.000
 
 EPOCH 75 ...
-Validation Accuracy = 0.969
-Training Accuracy = 1.000
-
-EPOCH 76 ...
-Validation Accuracy = 0.976
-Training Accuracy = 1.000
-
-EPOCH 77 ...
-Validation Accuracy = 0.970
-Training Accuracy = 1.000
-
-EPOCH 78 ...
-Validation Accuracy = 0.970
-Training Accuracy = 1.000
-
-EPOCH 79 ...
 Validation Accuracy = 0.971
 Training Accuracy = 1.000
 
-EPOCH 80 ...
-Validation Accuracy = 0.974
+EPOCH 76 ...
+Validation Accuracy = 0.967
 Training Accuracy = 0.999
 
-EPOCH 81 ...
+EPOCH 77 ...
+Validation Accuracy = 0.973
+Training Accuracy = 1.000
+
+EPOCH 78 ...
+Validation Accuracy = 0.974
+Training Accuracy = 1.000
+
+EPOCH 79 ...
 Validation Accuracy = 0.976
 Training Accuracy = 1.000
+
+EPOCH 80 ...
+Validation Accuracy = 0.973
+Training Accuracy = 1.000
+
+EPOCH 81 ...
+Validation Accuracy = 0.973
+Training Accuracy = 0.999
 
 EPOCH 82 ...
 Validation Accuracy = 0.974
 Training Accuracy = 1.000
 
 EPOCH 83 ...
-Validation Accuracy = 0.971
-Training Accuracy = 0.999
+Validation Accuracy = 0.972
+Training Accuracy = 1.000
 
 EPOCH 84 ...
-Validation Accuracy = 0.975
+Validation Accuracy = 0.970
 Training Accuracy = 1.000
 
 EPOCH 85 ...
-Validation Accuracy = 0.978
+Validation Accuracy = 0.970
 Training Accuracy = 1.000
 
 Model saved
@@ -12818,13 +12840,14 @@ Model saved
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Load the images and plot them here.</span>
 <span class="c1">### Feel free to use as many code cells as needed.</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">skimage.io</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="n">online_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;images/&quot;</span><span class="p">)</span>
 <span class="n">img_arr</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">online_img</span><span class="p">)</span>
@@ -15088,7 +15111,7 @@ TkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Run the predictions here and use the model to output the prediction for each image.</span>
@@ -15102,6 +15125,7 @@ TkSuQmCC
 <span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 
 <span class="n">w_test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 
 </div>
@@ -15137,6 +15161,25 @@ TkSuQmCC
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#test images processing</span>
+<span class="n">testX</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)):</span>
+    <span class="n">testX</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">equalizer</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">testX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">testX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -15148,16 +15191,18 @@ TkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Calculate the accuracy for these 5 new images. </span>
 <span class="c1">### For example, if the model predicted 1 out of 5 signs correctly, it&#39;s 20% accurate on these new images.</span>
 <span class="c1"># Launch the graph</span>
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s1">&#39;./lenet&#39;</span><span class="p">)</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">latest_checkpoint</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">))</span>
     <span class="n">web_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">w_test</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">web_accuracy</span><span class="p">)</span>
+    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Web Images Accuracy = </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">web_accuracy</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Accuracy = </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -15170,7 +15215,8 @@ TkSuQmCC
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0.733333349228
+<pre>Web Images Accuracy = 0.600
+Test Accuracy = 0.944
 </pre>
 </div>
 </div>
@@ -15227,7 +15273,7 @@ a = np.array([[ 0.24879643,  0.07032244,  0.12641572,  0.34763842,  0.07893497,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Print out the top five softmax probabilities for the predictions on the German traffic sign images found on the web. </span>
@@ -15250,61 +15296,59 @@ a = np.array([[ 0.24879643,  0.07032244,  0.12641572,  0.34763842,  0.07893497,
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>TopKV2(values=array([[  9.93165433e-01,   6.37401361e-03,   4.42845863e-04,
-          1.68651823e-05,   4.78843276e-07]], dtype=float32), indices=array([[30, 28, 11, 23, 20]], dtype=int32))
+<pre>TopKV2(values=array([[ 0.55093896,  0.38457265,  0.05178314,  0.00549385,  0.00181595]], dtype=float32), indices=array([[28, 30, 11,  5,  3]], dtype=int32))
 
 
-TopKV2(values=array([[  1.00000000e+00,   3.17523258e-10,   1.35318659e-10,
-          1.54434954e-11,   3.65397464e-13]], dtype=float32), indices=array([[22, 29, 34, 28, 26]], dtype=int32))
+TopKV2(values=array([[  1.00000000e+00,   1.24942403e-08,   6.80637235e-09,
+          3.12377768e-09,   2.37360442e-09]], dtype=float32), indices=array([[22, 25, 29, 30, 21]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99990702e-01,   3.68989959e-06,   2.40987470e-06,
-          1.77026607e-06,   8.49060598e-07]], dtype=float32), indices=array([[25, 31, 26, 20, 18]], dtype=int32))
+TopKV2(values=array([[  9.92953002e-01,   4.39951289e-03,   1.02531817e-03,
+          5.29745594e-04,   4.14419075e-04]], dtype=float32), indices=array([[25, 26,  5, 20, 13]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99498963e-01,   4.53908840e-04,   3.96792857e-05,
-          3.64735024e-06,   1.72542832e-06]], dtype=float32), indices=array([[18, 26, 27, 21, 11]], dtype=int32))
+TopKV2(values=array([[  9.93263423e-01,   6.45684963e-03,   1.62395940e-04,
+          1.01590093e-04,   1.02311860e-05]], dtype=float32), indices=array([[18, 27, 11, 26, 20]], dtype=int32))
 
 
-TopKV2(values=array([[  9.91435111e-01,   8.26086383e-03,   1.36614748e-04,
-          1.05903491e-04,   2.58478885e-05]], dtype=float32), indices=array([[14,  3,  8, 17, 20]], dtype=int32))
+TopKV2(values=array([[  9.94384885e-01,   4.24228143e-03,   1.35931640e-03,
+          5.45585317e-06,   3.26188638e-06]], dtype=float32), indices=array([[14,  3, 33,  8, 22]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99999523e-01,   2.80402304e-07,   4.10940331e-08,
-          3.79956226e-08,   1.90770688e-08]], dtype=float32), indices=array([[31, 11,  1,  3, 21]], dtype=int32))
+TopKV2(values=array([[ 0.75010383,  0.21083295,  0.01767779,  0.01050926,  0.00893508]], dtype=float32), indices=array([[10,  5, 25, 31, 30]], dtype=int32))
 
 
-TopKV2(values=array([[ 0.49766114,  0.14518803,  0.1425119 ,  0.12346865,  0.05634564]], dtype=float32), indices=array([[11,  5, 42,  6, 20]], dtype=int32))
+TopKV2(values=array([[  8.30181479e-01,   1.56856313e-01,   1.26355914e-02,
+          1.75396257e-04,   5.74257938e-05]], dtype=float32), indices=array([[3, 5, 2, 1, 8]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99743879e-01,   1.43333484e-04,   1.09788954e-04,
-          2.85006968e-06,   7.15854469e-08]], dtype=float32), indices=array([[22, 18, 26, 31, 23]], dtype=int32))
+TopKV2(values=array([[  9.97977436e-01,   1.71404891e-03,   5.96619466e-05,
+          5.26353178e-05,   4.85352684e-05]], dtype=float32), indices=array([[22, 31, 21, 34, 23]], dtype=int32))
 
 
-TopKV2(values=array([[ 0.75777811,  0.08456151,  0.043806  ,  0.02636491,  0.02506993]], dtype=float32), indices=array([[40, 42,  5, 31, 41]], dtype=int32))
+TopKV2(values=array([[ 0.86012048,  0.07576289,  0.02555382,  0.01008022,  0.00854152]], dtype=float32), indices=array([[21,  2, 27, 31, 24]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99996901e-01,   3.06124480e-06,   4.41441408e-08,
-          2.02691444e-12,   9.17874175e-13]], dtype=float32), indices=array([[4, 0, 1, 6, 8]], dtype=int32))
+TopKV2(values=array([[  9.99988914e-01,   7.19130685e-06,   3.93838445e-06,
+          5.52883260e-11,   1.50086072e-11]], dtype=float32), indices=array([[ 4,  1,  0, 20, 14]], dtype=int32))
 
 
-TopKV2(values=array([[  9.23398077e-01,   7.63409957e-02,   8.23122755e-05,
-          6.38025376e-05,   5.18746019e-05]], dtype=float32), indices=array([[11, 30, 40, 28, 24]], dtype=int32))
+TopKV2(values=array([[  9.99743640e-01,   2.23938230e-04,   1.94367003e-05,
+          4.86153886e-06,   3.03213551e-06]], dtype=float32), indices=array([[11, 30,  1,  5, 31]], dtype=int32))
 
 
-TopKV2(values=array([[  6.82397246e-01,   2.54961193e-01,   6.24006093e-02,
-          1.74323533e-04,   1.81131709e-05]], dtype=float32), indices=array([[34, 38, 40, 30, 12]], dtype=int32))
+TopKV2(values=array([[ 0.42907542,  0.27464205,  0.21756685,  0.07338233,  0.0026541 ]], dtype=float32), indices=array([[ 5, 38, 10,  8,  2]], dtype=int32))
 
 
-TopKV2(values=array([[  9.99803007e-01,   1.96919529e-04,   1.28485311e-07,
-          3.11320747e-08,   1.03076294e-08]], dtype=float32), indices=array([[35, 36, 13, 15,  3]], dtype=int32))
+TopKV2(values=array([[  9.99999642e-01,   3.22447647e-07,   1.26161914e-09,
+          1.15990395e-09,   9.87112725e-10]], dtype=float32), indices=array([[35, 36, 12, 28,  3]], dtype=int32))
 
 
-TopKV2(values=array([[ 0.48409113,  0.20069559,  0.18037033,  0.0738982 ,  0.02618326]], dtype=float32), indices=array([[35, 34,  1,  3, 17]], dtype=int32))
+TopKV2(values=array([[ 0.47318888,  0.25489905,  0.11006956,  0.09027325,  0.04558654]], dtype=float32), indices=array([[34, 38, 14, 17, 33]], dtype=int32))
 
 
-TopKV2(values=array([[  9.75055337e-01,   2.44145375e-02,   3.61174258e-04,
-          7.88188263e-05,   4.42395503e-05]], dtype=float32), indices=array([[ 1,  2, 31, 39,  0]], dtype=int32))
+TopKV2(values=array([[  9.99995112e-01,   4.70385066e-06,   2.34409697e-07,
+          4.64397516e-08,   3.52924552e-08]], dtype=float32), indices=array([[ 1,  5, 31,  3,  4]], dtype=int32))
 
 
 </pre>
@@ -15338,7 +15382,7 @@ TopKV2(values=array([[  9.75055337e-01,   2.44145375e-02,   3.61174258e-04,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Visualize your network&#39;s feature maps here.</span>
@@ -15378,16 +15422,166 @@ TopKV2(values=array([[  9.75055337e-01,   2.44145375e-02,   3.61174258e-04,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s1">&#39;./lenet&#39;</span><span class="p">)</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s1">&#39;lenet.meta&#39;</span><span class="p">)</span>
     <span class="n">activation</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s2">&quot;conv2:0&quot;</span><span class="p">)</span>            
     <span class="n">outputFeatureMap</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">activation</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NotFoundError</span>                             Traceback (most recent call last)
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_do_call</span><span class="ansi-blue-fg">(self, fn, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1020</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1021</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">return</span> fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1022</span>     <span class="ansi-green-fg">except</span> errors<span class="ansi-blue-fg">.</span>OpError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_run_fn</span><span class="ansi-blue-fg">(session, feed_dict, fetch_list, target_list, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1002</span>                                  feed_dict<span class="ansi-blue-fg">,</span> fetch_list<span class="ansi-blue-fg">,</span> target_list<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 1003</span><span class="ansi-red-fg">                                  status, run_metadata)
+</span><span class="ansi-green-intense-fg ansi-bold">   1004</span> 
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/contextlib.py</span> in <span class="ansi-cyan-fg">__exit__</span><span class="ansi-blue-fg">(self, type, value, traceback)</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 66</span><span class="ansi-red-fg">                 </span>next<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>gen<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     67</span>             <span class="ansi-green-fg">except</span> StopIteration<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/framework/errors_impl.py</span> in <span class="ansi-cyan-fg">raise_exception_on_not_ok_status</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">    468</span>           compat<span class="ansi-blue-fg">.</span>as_text<span class="ansi-blue-fg">(</span>pywrap_tensorflow<span class="ansi-blue-fg">.</span>TF_Message<span class="ansi-blue-fg">(</span>status<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 469</span><span class="ansi-red-fg">           pywrap_tensorflow.TF_GetCode(status))
+</span><span class="ansi-green-intense-fg ansi-bold">    470</span>   <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">NotFoundError</span>: Unsuccessful TensorSliceReader constructor: Failed to find any matching files for lenet.meta
+	 [[Node: save/RestoreV2_31 = RestoreV2[dtypes=[DT_FLOAT], _device=&#34;/job:localhost/replica:0/task:0/cpu:0&#34;](_recv_save/Const_0, save/RestoreV2_31/tensor_names, save/RestoreV2_31/shape_and_slices)]]
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">NotFoundError</span>                             Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-18-0fa4f97b8fad&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">with</span> tf<span class="ansi-blue-fg">.</span>Session<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">as</span> sess<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>saver<span class="ansi-blue-fg">.</span>restore<span class="ansi-blue-fg">(</span>sess<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;lenet.meta&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>     activation <span class="ansi-blue-fg">=</span> sess<span class="ansi-blue-fg">.</span>graph<span class="ansi-blue-fg">.</span>get_tensor_by_name<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;conv2:0&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>     outputFeatureMap<span class="ansi-blue-fg">(</span>X_train<span class="ansi-blue-fg">,</span> activation<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py</span> in <span class="ansi-cyan-fg">restore</span><span class="ansi-blue-fg">(self, sess, save_path)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1386</span>       <span class="ansi-green-fg">return</span>
+<span class="ansi-green-intense-fg ansi-bold">   1387</span>     sess.run(self.saver_def.restore_op_name,
+<span class="ansi-green-fg">-&gt; 1388</span><span class="ansi-red-fg">              {self.saver_def.filename_tensor_name: save_path})
+</span><span class="ansi-green-intense-fg ansi-bold">   1389</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1390</span>   <span class="ansi-blue-fg">@</span>staticmethod
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">    764</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    765</span>       result = self._run(None, fetches, feed_dict, options_ptr,
+<span class="ansi-green-fg">--&gt; 766</span><span class="ansi-red-fg">                          run_metadata_ptr)
+</span><span class="ansi-green-intense-fg ansi-bold">    767</span>       <span class="ansi-green-fg">if</span> run_metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    768</span>         proto_data <span class="ansi-blue-fg">=</span> tf_session<span class="ansi-blue-fg">.</span>TF_GetBuffer<span class="ansi-blue-fg">(</span>run_metadata_ptr<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_run</span><span class="ansi-blue-fg">(self, handle, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">    962</span>     <span class="ansi-green-fg">if</span> final_fetches <span class="ansi-green-fg">or</span> final_targets<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    963</span>       results = self._do_run(handle, final_targets, final_fetches,
+<span class="ansi-green-fg">--&gt; 964</span><span class="ansi-red-fg">                              feed_dict_string, options, run_metadata)
+</span><span class="ansi-green-intense-fg ansi-bold">    965</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    966</span>       results <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_do_run</span><span class="ansi-blue-fg">(self, handle, target_list, fetch_list, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1012</span>     <span class="ansi-green-fg">if</span> handle <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1013</span>       return self._do_call(_run_fn, self._session, feed_dict, fetch_list,
+<span class="ansi-green-fg">-&gt; 1014</span><span class="ansi-red-fg">                            target_list, options, run_metadata)
+</span><span class="ansi-green-intense-fg ansi-bold">   1015</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1016</span>       return self._do_call(_prun_fn, self._session, handle, feed_dict,
+
+<span class="ansi-green-fg">/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_do_call</span><span class="ansi-blue-fg">(self, fn, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1032</span>         <span class="ansi-green-fg">except</span> KeyError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1033</span>           <span class="ansi-green-fg">pass</span>
+<span class="ansi-green-fg">-&gt; 1034</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">raise</span> type<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">(</span>node_def<span class="ansi-blue-fg">,</span> op<span class="ansi-blue-fg">,</span> message<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1035</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1036</span>   <span class="ansi-green-fg">def</span> _extend_graph<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">NotFoundError</span>: Unsuccessful TensorSliceReader constructor: Failed to find any matching files for lenet.meta
+	 [[Node: save/RestoreV2_31 = RestoreV2[dtypes=[DT_FLOAT], _device=&#34;/job:localhost/replica:0/task:0/cpu:0&#34;](_recv_save/Const_0, save/RestoreV2_31/tensor_names, save/RestoreV2_31/shape_and_slices)]]
+
+Caused by op &#39;save/RestoreV2_31&#39;, defined at:
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/runpy.py&#34;, line 184, in _run_module_as_main
+    &#34;__main__&#34;, mod_spec)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/runpy.py&#34;, line 85, in _run_code
+    exec(code, run_globals)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/__main__.py&#34;, line 3, in &lt;module&gt;
+    app.launch_new_instance()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/traitlets/config/application.py&#34;, line 653, in launch_instance
+    app.start()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/kernelapp.py&#34;, line 474, in start
+    ioloop.IOLoop.instance().start()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/zmq/eventloop/ioloop.py&#34;, line 177, in start
+    super(ZMQIOLoop, self).start()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tornado/ioloop.py&#34;, line 887, in start
+    handler_func(fd_obj, events)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tornado/stack_context.py&#34;, line 275, in null_wrapper
+    return fn(*args, **kwargs)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/zmq/eventloop/zmqstream.py&#34;, line 440, in _handle_events
+    self._handle_recv()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/zmq/eventloop/zmqstream.py&#34;, line 472, in _handle_recv
+    self._run_callback(callback, msg)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/zmq/eventloop/zmqstream.py&#34;, line 414, in _run_callback
+    callback(*args, **kwargs)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tornado/stack_context.py&#34;, line 275, in null_wrapper
+    return fn(*args, **kwargs)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/kernelbase.py&#34;, line 276, in dispatcher
+    return self.dispatch_shell(stream, msg)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/kernelbase.py&#34;, line 228, in dispatch_shell
+    handler(stream, idents, msg)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/kernelbase.py&#34;, line 390, in execute_request
+    user_expressions, allow_stdin)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/ipkernel.py&#34;, line 196, in do_execute
+    res = shell.run_cell(code, store_history=store_history, silent=silent)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/ipykernel/zmqshell.py&#34;, line 501, in run_cell
+    return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/IPython/core/interactiveshell.py&#34;, line 2717, in run_cell
+    interactivity=interactivity, compiler=compiler, result=result)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/IPython/core/interactiveshell.py&#34;, line 2821, in run_ast_nodes
+    if self.run_code(code, result):
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/IPython/core/interactiveshell.py&#34;, line 2881, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;&lt;ipython-input-9-4bad979549c4&gt;&#34;, line 1, in &lt;module&gt;
+    saver = tf.train.Saver()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py&#34;, line 1000, in __init__
+    self.build()
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py&#34;, line 1030, in build
+    restore_sequentially=self._restore_sequentially)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py&#34;, line 624, in build
+    restore_sequentially, reshape)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py&#34;, line 361, in _AddRestoreOps
+    tensors = self.restore_op(filename_tensor, saveable, preferred_shard)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/training/saver.py&#34;, line 200, in restore_op
+    [spec.tensor.dtype])[0])
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/ops/gen_io_ops.py&#34;, line 441, in restore_v2
+    dtypes=dtypes, name=name)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/framework/op_def_library.py&#34;, line 759, in apply_op
+    op_def=op_def)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/framework/ops.py&#34;, line 2240, in create_op
+    original_op=self._default_original_op, op_def=op_def)
+  File &#34;/home/carnd/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/framework/ops.py&#34;, line 1128, in __init__
+    self._traceback = _extract_stack()
+
+NotFoundError (see above for traceback): Unsuccessful TensorSliceReader constructor: Failed to find any matching files for lenet.meta
+	 [[Node: save/RestoreV2_31 = RestoreV2[dtypes=[DT_FLOAT], _device=&#34;/job:localhost/replica:0/task:0/cpu:0&#34;](_recv_save/Const_0, save/RestoreV2_31/tensor_names, save/RestoreV2_31/shape_and_slices)]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
